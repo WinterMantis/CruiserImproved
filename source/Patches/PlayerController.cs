@@ -13,13 +13,15 @@ namespace CruiserImproved.Patches;
 [HarmonyPatch(typeof(PlayerControllerB))]
 internal class PlayerControllerPatches
 {
+    private static bool usingSeatCam = false;
+
     [HarmonyPatch("Update")]
     [HarmonyPostfix]
     public static void Update_Postfix(PlayerControllerB __instance)
     {
         if (LCVRCompatibility.inVrSession) return;
 
-        private bool usingSeatCam;
+        if (__instance != GameNetworkManager.Instance.localPlayerController) return;
 
         bool cameraSettingsEnabled = NetworkSync.Config.AllowLean || NetworkSync.Config.SeatBoostScale > 0f;
         if (!cameraSettingsEnabled) return;
