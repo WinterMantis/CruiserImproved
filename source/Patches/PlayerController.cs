@@ -19,12 +19,15 @@ internal class PlayerControllerPatches
     {
         if (LCVRCompatibility.inVrSession) return;
 
+        private bool usingSeatCam;
+
         bool cameraSettingsEnabled = NetworkSync.Config.AllowLean || NetworkSync.Config.SeatBoostScale > 0f;
         if (!cameraSettingsEnabled) return;
 
         Vector3 cameraOffset = Vector3.zero;
         if (__instance.inVehicleAnimation)
         {
+            usingSeatCam = true;
             //If we're in a car, boost the camera upward slightly for better visibility
             cameraOffset = new Vector3(0f, 0.25f, -0.05f) * NetworkSync.Config.SeatBoostScale;
             Vector3 lookFlat = __instance.gameplayCamera.transform.localRotation * Vector3.forward;
@@ -35,9 +38,14 @@ internal class PlayerControllerPatches
                 //If we're looking backwards, offset the camera to the side ('leaning')
                 cameraOffset.x = Mathf.Sign(lookFlat.x) * ((70f - angleToBack)/70f);
             }
+            __instance.gameplayCamera.transform.localPosition = cameraOffset;
         }
-
-        __instance.gameplayCamera.transform.localPosition = cameraOffset;
+        else if (!__instance.inVehicleAnimation && usingSeatCam == true)
+        {
+            //If player is not in the cruiser, reset the camera once
+            usingSeatCam = false;
+            __instance.gameplayCamera.transform.localPosition = Vector3.zero;
+        }
     }
 
     [HarmonyPatch("PlaceGrabbableObject")]
