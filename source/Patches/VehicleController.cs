@@ -89,6 +89,9 @@ internal class VehicleControllerPatches
     {
         VehicleControllerData thisData = vehicleData[vehicle];
 
+        //don't modify non-vanilla cruiser
+        if (vehicle.vehicleID != 0) return;
+
         //Allow player to turn further backward for the lean mechanic
         if (NetworkSync.Config.AllowLean)
         {
