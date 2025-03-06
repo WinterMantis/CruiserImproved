@@ -34,6 +34,9 @@ internal class NetworkConfig : INetworkSerializable
     public bool TurboExhaust = false;
     public ScanNodeOptions CruiserScanNode = 0;
 
+    //Settings as of v1.5.0
+    public bool ScanWhileSeated = false;
+
     //Initialize NetworkedSettings from local config
     public void CopyLocalConfig()
     {
@@ -64,6 +67,9 @@ internal class NetworkConfig : INetworkSerializable
         CruiserScanNode = UserConfig.CruiserScanNode.Value;
 
         TurboExhaust = UserConfig.TurboExhaust.Value;
+
+        //v1.5.0
+        ScanWhileSeated = UserConfig.ScanWhileSeated.Value;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -106,5 +112,9 @@ internal class NetworkConfig : INetworkSerializable
         serializer.SerializeValue(ref StandingKeyRemoval);
         serializer.SerializeValue(ref CruiserScanNode);
         serializer.SerializeValue(ref TurboExhaust);
+
+        // v1.5.0
+        if (version < new Version(1, 5, 0)) return;
+        serializer.SerializeValue(ref ScanWhileSeated);
     }
 }

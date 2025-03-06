@@ -48,6 +48,7 @@ internal class UserConfig
     //QOL
     internal static ConfigEntry<bool> HandsfreeDoors;
     internal static ConfigEntry<bool> StandingKeyRemoval;
+    internal static ConfigEntry<bool> ScanWhileSeated;
 
     internal static Dictionary<ConfigDefinition, ConfigEntryBase> ConfigMigrations;
 
@@ -95,6 +96,7 @@ internal class UserConfig
         //QOL
         HandsfreeDoors = config.Bind("Quality of Life", "Handsfree Doors", true, "If true, allow opening the Cruiser's back and side doors when holding a 2 handed item.");
         StandingKeyRemoval = config.Bind("Quality of Life", "Standing Key Removal", true, "If true, allow the removal of the key from the ignition when not seated.");
+        ScanWhileSeated = config.Bind("Quality of Life", "Scan While Seated", true, "If true, allow players to scan while seated in the Cruiser.");
 
         MigrateOldConfigs(config);
         config.Save();
