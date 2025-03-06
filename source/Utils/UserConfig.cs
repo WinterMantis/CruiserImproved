@@ -29,6 +29,7 @@ internal class UserConfig
     internal static ConfigEntry<bool> DisableRadioStatic;
     internal static ConfigEntry<bool> TurboExhaust;
     internal static ConfigEntry<ScanNodeOptions> CruiserScanNode;
+    internal static ConfigEntry<bool> CabinLightToggle;
 
     //Cruiser Health
     internal static ConfigEntry<float> CruiserInvulnerabilityDuration;
@@ -68,6 +69,7 @@ internal class UserConfig
         TurboExhaust = config.Bind("General", "Turbo Exhaust Smoke", true, "If true, the Cruiser's exhaust will be slightly tinted blue when at least one turbo boost is stored.");
         CruiserScanNode = config.Bind("General", "Cruiser Scan Node", ScanNodeOptions.Enabled | ScanNodeOptions.VisibleThroughWalls | ScanNodeOptions.HealthEstimate, "Customize a scan node to easily find your Cruiser, like the scan nodes on the ship and the main entrance." +
             "\nCan display information according to values set. If multiple settings are specified for the same information, the most detailed is used.");
+        CabinLightToggle = config.Bind("General", "Cabin Light Toggle", true, "If true, allow toggling the cabin light by interacting with it.\nThe light state will be synced with other CruiserImproved users.");
 
         AcceptableValueRange<float> seatScale = new(0f, 1f);
         SeatBoostScale = config.Bind("General", "Seat Boost Scale", 1.0f, new ConfigDescription("How much to boost the seat up? Set 0 to disable.", seatScale));

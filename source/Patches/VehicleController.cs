@@ -66,6 +66,8 @@ internal class VehicleControllerPatches
         "Meshes/CabinWindowContainer",
     };
 
+    static readonly string CopyButton = "Triggers/ChangeChannel (3)";
+
     public static Dictionary<VehicleController, VehicleControllerData> vehicleData = new();
 
     private static void RemoveStaleVehicleData()
@@ -167,6 +169,22 @@ internal class VehicleControllerPatches
             mmGradient.gradient.SetKeys(colorKeys, mmGradient.gradient.alphaKeys);
 
             colorOverLifetime.color = mmGradient;
+        }
+
+        if(NetworkSync.Config.CabinLightToggle)
+        {
+            Transform child = vehicle.transform.Find(CopyButton);
+            Transform cabLightToggle = GameObject.Instantiate(child, child.parent);
+
+            cabLightToggle.name = "CabLightToggle";
+            cabLightToggle.transform.localPosition = new(-0.045f, 1.1f, 2.06f);
+            cabLightToggle.transform.localEulerAngles = new(315f, 0f, 0f);
+            cabLightToggle.transform.localScale = new(0.55f, 0.1f, 0.04f);
+
+            InteractTrigger trigger = cabLightToggle.GetComponent<InteractTrigger>();
+            trigger.hoverTip = "Switch light: [LMB]";
+            trigger.onInteract = new();
+            trigger.onInteract.AddListener((PlayerControllerB player) => { InteractCabLight(vehicle, player); });
         }
     }
 
@@ -1235,5 +1253,49 @@ internal class VehicleControllerPatches
         }
         __instance.keyIgnitionCoroutine = __instance.StartCoroutine(__instance.RemoveKey());
         __instance.RemoveKeyFromIgnitionServerRpc((int)GameNetworkManager.Instance.localPlayerController.playerClientId);
+    }
+
+    [HarmonyPatch("SetIgnition")]
+    [HarmonyPrefix]
+    static public bool SetIgnition_Prefix(VehicleController __instance, bool started)
+    {
+        return started != __instance.ignitionStarted;
+    }
+
+    static public void InteractCabLight(VehicleController controller, PlayerControllerB player)
+    {
+        CruiserImproved.LogMessage("Light toggle!");
+
+        VehicleControllerData data = vehicleData[controller];
+
+        bool setLightState = !controller.frontCabinLightContainer.activeSelf;
+
+        controller.SetFrontCabinLightOn(setLightState);
+
+        FastBufferWriter bufferWriter = new(16, Unity.Collections.Allocator.Temp);
+
+        bufferWriter.WriteValue(new NetworkObjectReference(controller.NetworkObject));
+        bufferWriter.WriteValue(setLightState);
+
+        NetworkSync.SendToHost("ToggleCabLightRpc", bufferWriter);
+    }
+
+    static public void ToggleCabLightRpc(ulong clientId, FastBufferReader reader)
+    {
+        reader.ReadNetworkSerializable(out NetworkObjectReference cruiserRef);
+        reader.ReadValue(out bool lightsOn);
+        if (!cruiserRef.TryGet(out NetworkObject cruiserNetObj)) return;
+        if (!cruiserNetObj.TryGetComponent(out VehicleController vehicle)) return;
+
+        if (NetworkManager.Singleton.IsHost)
+        {
+            FastBufferWriter bufferWriter = new(16, Unity.Collections.Allocator.Temp);
+
+            bufferWriter.WriteValue(cruiserRef);
+            bufferWriter.WriteValue(lightsOn);
+            NetworkSync.SendToClients("ToggleCabLightRpc", ref bufferWriter);
+        }
+
+        vehicle.SetFrontCabinLightOn(lightsOn);
     }
 }

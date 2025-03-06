@@ -37,6 +37,8 @@ internal class NetworkConfig : INetworkSerializable
     //Settings as of v1.5.0
     public bool ScanWhileSeated = false;
 
+    public bool CabinLightToggle = false;
+
     //Initialize NetworkedSettings from local config
     public void CopyLocalConfig()
     {
@@ -70,6 +72,8 @@ internal class NetworkConfig : INetworkSerializable
 
         //v1.5.0
         ScanWhileSeated = UserConfig.ScanWhileSeated.Value;
+
+        CabinLightToggle = UserConfig.CabinLightToggle.Value;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -116,5 +120,6 @@ internal class NetworkConfig : INetworkSerializable
         // v1.5.0
         if (version < new Version(1, 5, 0)) return;
         serializer.SerializeValue(ref ScanWhileSeated);
+        serializer.SerializeValue(ref CabinLightToggle);
     }
 }

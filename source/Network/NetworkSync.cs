@@ -53,6 +53,7 @@ internal static class NetworkSync
 
         SetupMessageHandler("SyncSteeringRpc", VehicleControllerPatches.SyncSteeringRpc);
         SetupMessageHandler("SyncRadioTimeRpc", VehicleControllerPatches.SyncRadioTimeRpc);
+        SetupMessageHandler("ToggleCabLightRpc", VehicleControllerPatches.ToggleCabLightRpc);
     }
 
     static public void Cleanup()
