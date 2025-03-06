@@ -27,7 +27,10 @@ internal class PlayerControllerPatches
         if (!cameraSettingsEnabled) return;
 
         Vector3 cameraOffset = Vector3.zero;
-        if (__instance.inVehicleAnimation)
+
+        //check we're in the vanilla Cruiser before modifying camera
+        bool validCruiser = __instance.inVehicleAnimation && __instance.currentTriggerInAnimationWith && __instance.currentTriggerInAnimationWith.overridePlayerParent;
+        if (validCruiser && __instance.currentTriggerInAnimationWith.overridePlayerParent.TryGetComponent<VehicleController>(out var controller) && controller.vehicleID == 0)
         {
             usingSeatCam = true;
             //If we're in a car, boost the camera upward slightly for better visibility

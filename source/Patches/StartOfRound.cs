@@ -85,7 +85,8 @@ internal class StartOfRoundPatches
     [HarmonyPostfix]
     static void LoadAttachedVehicle_Postfix(StartOfRound __instance)
     {
-        if (!__instance.attachedVehicle) return;
+        //Check for a saved vanilla Cruiser
+        if (!__instance.attachedVehicle || __instance.attachedVehicle.vehicleID != 0) return;
         try
         {
             var vehicle = __instance.attachedVehicle;
