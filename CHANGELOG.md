@@ -1,3 +1,18 @@
+## 1.5.0
+
+Updated compatibility for v69.
+
+### Features
+- \[Client\] Ability to toggle the Cruiser's cabin light by interacting with it.
+- \[Client\] Ability to scan while seated in the Cruiser (thanks to [Buttery Stancakes](https://github.com/ButteryStancakes))
+
+### Bugfixes
+- \[Client\] Fix 'ghosting' of interactable prompts across the Cruiser's windshield.
+
+### Compatibility
+- Fixed an issue causing the player's camera to be modified when not seated in the Cruiser, which was breaking compatibility with some mods that affect the camera (thanks to [WinterMantis](https://github.com/WinterMantis))
+- Added checks to make sure only the vanilla Cruiser is affected by most of CruiserImproved's changes. This should improve compatibility with mods that add new vehicles.
+
 ## 1.4.1
 
 Full compatibility for v64. Should still be compatible with v56.

@@ -20,6 +20,8 @@ Clients will copy the host's settings if both sides have the mod installed.
 - Ability remove the key from the ignition while not seated.
 - Added a scan node to the Cruiser to help locate it from far away. Can be configured to show turbos and health.
 - Cruiser exhaust is tinted blue when it has stored turbo charges.
+- Ability to toggle the Cruiser's cabin light by interacting with it.
+- Ability to scan while seated in the Cruiser (thanks to [Buttery Stancakes](https://github.com/ButteryStancakes))
 - \[Host\] Prevent anyone in the lobby other than the driver pressing the eject button on Cruisers. Disabled by default.
 - \[Host\] Entities pathfind around stationary Cruisers with no one seated, instead of walking straight through and causing damage.
 - \[Host\] Equipment and weapons moved into the ship from the Cruiser on save reload is sorted into a separate pile from the rest of the scrap.
@@ -48,6 +50,7 @@ Clients will copy the host's settings if both sides have the mod installed.
 - \[Client\] Fix items being unscannable when placed in the Cruiser.
 - \[Client\] Fix wheel skidding sound effect and visuals playing while the Cruiser is airborne or magneted.
 - \[Client\] Fix Cruiser accelerating while attached to the magnet if not in park.
+- \[Client\] Fix 'ghosting' of interactable prompts across the Cruiser's windshield.
 
 ### Feedback
 
@@ -57,7 +60,7 @@ Feel free to post suggestions or issues to:
 - The mod's [thread](https://discord.com/channels/1168655651455639582/1258980772996448309) in the [LC Modding discord server](https://discord.gg/XeyYqRdRGC)
 
 ### Compatibility
-Compatible with Lethal Company v64.
+Compatible with Lethal Company v69.
 
 CruiserImproved should be compatible with most mods, but it works well with:
 - [BetterVehicleControls](https://thunderstore.io/c/lethal-company/p/Dev1A3/BetterVehicleControls/)
