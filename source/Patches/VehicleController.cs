@@ -1264,8 +1264,6 @@ internal class VehicleControllerPatches
 
     static public void InteractCabLight(VehicleController controller, PlayerControllerB player)
     {
-        CruiserImproved.LogMessage("Light toggle!");
-
         VehicleControllerData data = vehicleData[controller];
 
         bool setLightState = !controller.frontCabinLightContainer.activeSelf;
